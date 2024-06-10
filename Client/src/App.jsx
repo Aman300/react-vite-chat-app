@@ -52,6 +52,7 @@ export default function App() {
             }
           >
             <Route path="/" element={<Home />} />            
+            <Route path="/chat/:id" element={<Transaction />} />            
             <Route path="/transaction" element={<Transaction />} />
             <Route path="/wallet" element={<Wallet />} />
             <Route path="/refer&earn" element={<ReferEarn />} />

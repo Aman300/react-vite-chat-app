@@ -6,7 +6,6 @@ import { useFormik } from 'formik';
 import { createGameRoute, deleteGameRoute } from '../../utils/APIRoutes';
 import socket from "../../utils/Socket";
 import 'animate.css';
-import ReactApexChart from 'react-apexcharts';
 import { Link, useNavigate } from 'react-router-dom';
 
 
@@ -120,49 +119,6 @@ async function fetchOpenGame(){
   }, []);
 
 
-  const [options, setOptions] = useState({
-    chart: {
-      type: 'bar',
-      height: 325
-    },
-    plotOptions: {
-      bar: {
-        horizontal: false,
-        columnWidth: '55%',
-        endingShape: 'rounded',
-        borderRadius: 3,
-        color: 'black' // Setting bar color to black
-      },
-    },
-    dataLabels: {
-      enabled: false
-    },
-    stroke: {
-      show: true,
-      width: 2,
-      colors: ['transparent']
-    },
-    xaxis: {
-      categories: ['Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
-    },
-    // yaxis: {
-    //   title: {
-    //     text: '$ (thousands)'
-    //   }
-    // },
-    fill: {
-      opacity: 1,
-      colors: ['#000000'] // Setting bar color to black
-    }
-  });
-  
-
-  const [series, setSeries] = useState([{
-    name: 'Net Profit',
-    data: [44, 55, 45, 56, 81, 58, 63, 30, 66]
-  }]);
-
-
 
 
   return (
@@ -176,79 +132,52 @@ async function fetchOpenGame(){
       <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
     </svg>
         
-     <p className='text-center font-semibold text-black mb-6'>Transaction</p>
+     <p className='text-center font-semibold text-black mb-6'>Chat</p>
 
      <p className='text-center font-semibold text-black mb-6'></p>
       
         
-    </div>
-
-     
-
-      <div className='bg-black text-white h-12 rounded-3xl w-full flex justify-around items-center mb-8'>
-          <a href="">1W</a>
-          <a href="">1M</a>
-          <a href="">6M</a>
-          <a href="">1Y</a>
-          <a href="">ALL</a>
-      </div>
-
-      <div className='grid grid-cols-1 gap-3 mb-8'>
-      <ReactApexChart options={options} series={series} type="bar" />
-      </div>
-
+    </div>  
       <div>
         <div className='flex justify-between items-center mb-4'>
-          <p className=' font-semibold'>Transaction</p>
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 cursor-pointer">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-          </svg>
-        </div>
-
-        <div className=' flex justify-between items-center bg-white w-full h-20 px-5 rounded-2xl mb-3'>
-          <div className='flex justify-center items-center gap-2'>
+        <div className='flex justify-center items-center gap-2'>
             <div>
               <img className=' size-12' src="https://avatar.iran.liara.run/username?username=Aman+Sharma" alt="" />
             </div>
             <div>
               <p className='text-black font-semibold'>Aman Sharma</p>
-              <p className='text-sm font-semibold text-gray-500'>24 sep 2024</p>
+              <p className='text-sm font-semibold text-green-500'>Online..</p>
             </div>
           </div>
-          <div>
-            <p className=' font-semibold text-green-600'>+₹ 11213.34</p>
-          </div>
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 cursor-pointer">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+          </svg>
         </div>
 
-        <div className=' flex justify-between items-center bg-white w-full h-20 px-5 rounded-2xl mb-3'>
-          <div className='flex justify-center items-center gap-2'>
+        <div className=' flex justify-between items-start bg-white w-full h-[450px] px-5 rounded-2xl mb-3'>
+
+        
+        <div className='flex justify-center items-center'>
+
             <div>
-              <img className=' size-12' src="https://avatar.iran.liara.run/username?username=Ram+kumar" alt="" />
+              <input id="msg" name='msg' 
+              className={`w-full px-8 py-4 rounded-full font-medium bg-gray-100 border placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5`}
+              type="text"
+              placeholder="Message..."
+              />
             </div>
-            <div>
-              <p className='text-black font-semibold'>Ram kumar</p>
-              <p className='text-sm font-semibold text-gray-500'>12 oct 2024</p>
+
+            <div className=''>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 ">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5" />
+              </svg>
             </div>
-          </div>
-          <div>
-            <p className=' font-semibold text-green-600'>-₹ 1113.36</p>
-          </div>
+
+        </div>
+         
         </div>
 
-        <div className=' flex justify-between items-center bg-white w-full h-20 px-5 rounded-2xl mb-3'>
-          <div className='flex justify-center items-center gap-2'>
-            <div>
-              <img className=' size-12' src="https://avatar.iran.liara.run/username?username=Shubham+Sharma" alt="" />
-            </div>
-            <div>
-              <p className='text-black font-semibold'>Shubham sharma</p>
-              <p className='text-sm font-semibold text-gray-500'>12 oct 2024</p>
-            </div>
-          </div>
-          <div>
-            <p className=' font-semibold text-green-600'>-₹ 2583.69</p>
-          </div>
-        </div>
+       
       </div>
 
     </div>

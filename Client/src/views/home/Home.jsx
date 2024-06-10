@@ -6,6 +6,7 @@ import { useFormik } from 'formik';
 import { createGameRoute, deleteGameRoute } from '../../utils/APIRoutes';
 import socket from "../../utils/Socket";
 import 'animate.css';
+import { Link } from 'react-router-dom';
 
 
 const validate = values => {
@@ -144,7 +145,7 @@ async function fetchOpenGame(){
           </svg>
         </div>
 
-        <div className=' flex justify-between items-center bg-white w-full h-20 px-5 rounded-2xl mb-3'>
+        <Link to={`/chat/123`} className='flex justify-between items-center bg-white w-full h-20 px-5 rounded-2xl mb-3'>
           <div className='flex justify-center items-center gap-2'>
             <div>
               <img className=' size-12' src="https://avatar.iran.liara.run/username?username=Aman+Sharma" alt="" />
@@ -159,7 +160,7 @@ async function fetchOpenGame(){
               <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
             </svg>
           </div>
-        </div>
+        </Link>
 
         <div className=' flex justify-between items-center bg-white w-full h-20 px-5 rounded-2xl mb-3'>
           <div className='flex justify-center items-center gap-2'>
