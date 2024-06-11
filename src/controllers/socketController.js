@@ -6,7 +6,8 @@ const ludoGame = require("../models/chat.message");
 module.exports = function (server) {
   const io = socket(server, {
     cors: {
-      origin: "http://localhost:3001",
+      // origin: "http://localhost:3001",
+      origin: "https://ourchat.onrender.com/",
       credentials: true,
     },
   });

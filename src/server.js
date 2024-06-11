@@ -38,6 +38,15 @@ app.use("/api", router);
 const port = process.env.PORT || 3000;
 const server = http.createServer(app); // Create server instance
 
+
+// Have Node serve the files for our built React app
+app.use(express.static(path.resolve(__dirname, "../Client/dist")));
+
+// All other GET requests not handled before will return our React app
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "../Client/dist", "index.html"));
+});
+
 // Pass server instance to socket controller
 socketController(server);
 
