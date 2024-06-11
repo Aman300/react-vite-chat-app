@@ -10,6 +10,7 @@ import Support from './views/home/Support';
 import TermLegal from './views/home/TermLegal';
 import Transaction from './views/home/Transaction';
 import PrivateRoutes from './utils/PrivateRoutes';
+import Chat from './views/home/Chat';
 
 export default function App() {
   return (
@@ -52,7 +53,7 @@ export default function App() {
             }
           >
             <Route path="/" element={<Home />} />            
-            <Route path="/chat/:id" element={<Transaction />} />            
+            <Route path="/chat/:id" element={<Chat />} />            
             <Route path="/transaction" element={<Transaction />} />
             <Route path="/wallet" element={<Wallet />} />
             <Route path="/refer&earn" element={<ReferEarn />} />

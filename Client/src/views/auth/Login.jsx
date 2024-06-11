@@ -8,7 +8,9 @@ import { useGoogleLogin } from '@react-oauth/google';
 const validate = values => {
   const errors = {};
 
- 
+  if(!values.name){
+    errors.password = 'Required';
+  }
   if (!values.email) {
     errors.email = 'Required';
   } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
@@ -26,6 +28,7 @@ function Login() {
   const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
+      name: '',
       email: '',
       password:'',
     },
@@ -34,6 +37,7 @@ function Login() {
       try {
         // Send a request to the server to authenticate the user
         const response = await axios.post(loginRoute, {
+          name: values.name,
           email: values.email,
           password: values.password,
         });
@@ -46,6 +50,7 @@ function Login() {
 
         // Store user data in localStorage
         localStorage.setItem('user', JSON.stringify(response.data.data));
+        localStorage.setItem("room", 99)
 
         // Display success message
         toast.success(response.data.message);
@@ -72,11 +77,34 @@ function Login() {
             Authorization: `Bearer ${response.access_token}`
           }
         })
-        console.log(res)
-
-        localStorage.setItem('token', true);
-        localStorage.setItem("user", JSON.stringify(res.data))
-        navigate("/");
+        try {
+          // Send a request to the server to authenticate the user
+          const resPonse = await axios.post(loginRoute, {
+            name: res.name,
+            email: res.email,
+            password: res.sub,
+            profile: req.picture
+          });
+  
+          console.log(resPonse.data)
+          const token = resPonse.data.data.token ? true : false;
+  
+          // Store the token in localStorage
+          localStorage.setItem('token', token);
+  
+          // Store user data in localStorage
+          localStorage.setItem('user', JSON.stringify(resPonse.data.data));
+  
+          // Display success message
+          toast.success(resPonse.data.message);
+  
+          navigate("/")
+  
+        } catch (error) {
+          // Handle any errors
+          console.error('Login failed:', error);
+          toast.error(error.resPonse.data.message);
+        }
 
       }catch(e){
         console.log(e)
@@ -126,6 +154,12 @@ function Login() {
             </div>
 
        <form onSubmit={formik.handleSubmit}>
+
+       <input id="name" name='name' onChange={formik.handleChange}
+            className={`w-full px-8 py-4 rounded-full font-medium bg-gray-100 border ${formik.errors.name ? "border-red-500" : "border-gray-300"} placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5`}
+            type="text"
+            placeholder="Enter your name"
+            />
           {/*  */}
             <input id="email" name='email' onChange={formik.handleChange}
             className={`w-full px-8 py-4 rounded-full font-medium bg-gray-100 border ${formik.errors.email ? "border-red-500" : "border-gray-300"} placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5`}
@@ -136,7 +170,7 @@ function Login() {
 
             <input id="password" name='password' onChange={formik.handleChange}
             className={`w-full px-8 py-4 rounded-full font-medium bg-gray-100 border ${formik.errors.password ? "border-red-500" : "border-gray-300"} placeholder-gray-500 text-sm focus:outline-none focus:border-gray-400 focus:bg-white mt-5`}
-            type="number"
+            type="text"
             placeholder="Enter your password"
             />
             {/* {formik.errors.password && <div className="text-red-500 ">{formik.errors.password}</div>} */}

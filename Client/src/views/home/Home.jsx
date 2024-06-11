@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { openGameRoute } from '../../utils/APIRoutes';
+import { openGameRoute, userListRoute } from '../../utils/APIRoutes';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useFormik } from 'formik';
@@ -26,6 +26,7 @@ function Home() {
 
   const [showModal, setShowModal] = useState(false);
   const [data,setData] = useState([])
+  const [userData,setUserData] = useState([])
 
   const [amount, setAmount] = useState('');
 
@@ -48,6 +49,16 @@ async function fetchOpenGame(){
     let response = await axios.get(openGameRoute)
     if(response.data.status){
       setData(response.data.data) 
+    }
+  }catch(e){
+    console.log(e)
+  }
+}
+async function fetchUserList(){
+  try{
+    let response = await axios.get(userListRoute)
+    if(response.data.status){
+      setUserData(response.data.data) 
     }
   }catch(e){
     console.log(e)
@@ -106,31 +117,35 @@ async function fetchOpenGame(){
 
 
 
-  useEffect(() => {
-    // Emit join-room event when the socket connection is established
-    socket.emit("join-room", 101);
-    socket.emit("send-message", 
-      fetchOpenGame()
-    );
+  // useEffect(() => {
+  //   fetchUserList();
+  //   // Emit join-room event when the socket connection is established
+  //   socket.emit("join-room", 101);
+  //   socket.emit("send-message", 
+  //     fetchOpenGame()
+  //   );
 
-    socket.on("receive-message", (data) => {
-      console.log(data)
-      setData(data)
-      //setChatMessages((prevMessages) => [...prevMessages, data]);
-    });
+  //   socket.on("receive-message", (data) => {
+  //     console.log(data)
+  //     setData(data)
+  //     //setChatMessages((prevMessages) => [...prevMessages, data]);
+  //   });
 
-    socket.on("disconnect", () => {
-      socket.emit("send-message", 
-      fetchOpenGame()
-    );
-    });
+  //   socket.on("disconnect", () => {
+  //     socket.emit("send-message", 
+  //     fetchOpenGame()
+  //   );
+  //   });
 
-    return () => {
-      // Unsubscribe from socket events here if needed
-      // Note: It's generally not necessary to manually disconnect the socket here,
-      // as it will be disconnected automatically when the component unmounts.
-    };
-  }, []);
+  //   return () => {
+  //     // Unsubscribe from socket events here if needed
+  //     // Note: It's generally not necessary to manually disconnect the socket here,
+  //     // as it will be disconnected automatically when the component unmounts.
+  //   };
+  // }, []);
+
+
+
 
 
   return (
@@ -145,56 +160,32 @@ async function fetchOpenGame(){
           </svg>
         </div>
 
-        <Link to={`/chat/123`} className='flex justify-between items-center bg-white w-full h-20 px-5 rounded-2xl mb-3'>
-          <div className='flex justify-center items-center gap-2'>
-            <div>
-              <img className=' size-12' src="https://avatar.iran.liara.run/username?username=Aman+Sharma" alt="" />
-            </div>
-            <div>
-              <p className='text-black font-semibold'>Aman Sharma</p>
-              <p className='text-sm font-semibold text-gray-500'>I'll Call you later</p>
-            </div>
-          </div>
-          <div>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-              <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-            </svg>
-          </div>
-        </Link>
 
-        <div className=' flex justify-between items-center bg-white w-full h-20 px-5 rounded-2xl mb-3'>
-          <div className='flex justify-center items-center gap-2'>
-            <div>
-              <img className=' size-12' src="https://avatar.iran.liara.run/username?username=Ram+kumar" alt="" />
-            </div>
-            <div>
-              <p className='text-black font-semibold'>Ram kumar</p>
-              <p className='text-sm font-semibold text-gray-500'>Thanks Ram ✌</p>
-            </div>
-          </div>
-          <div>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-              <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-            </svg>
-          </div>
-        </div>
+          {
+            userData && userData.map((item, index)=>(
+              <Link key={index} to={`/chat/${item._id}`} className='flex justify-between items-center bg-white w-full h-20 px-5 rounded-2xl mb-3'>
+              <div className='flex justify-center items-center gap-2'>
+                <div>
+                  <img className=' size-12' src={item.profile} alt="" />
+                </div>
+                <div>
+                  <p className='text-black font-semibold'>{item.name}</p>
+                  <p className='text-sm font-semibold text-gray-500'>I'll Call you later</p>
+                </div>
+              </div>
+              <div>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                </svg>
+              </div>
+            </Link>
+            )) 
+          }
+       
 
-        <div className=' flex justify-between items-center bg-white w-full h-20 px-5 rounded-2xl mb-3'>
-          <div className='flex justify-center items-center gap-2'>
-            <div>
-              <img className=' size-12' src="https://avatar.iran.liara.run/username?username=Shubham+Sharma" alt="" />
-            </div>
-            <div>
-              <p className='text-black font-semibold'>Shubham S</p>
-              <p className='text-sm font-semibold text-gray-500'>Ok By🤞🤞🤞</p>
-            </div>
-          </div>
-          <div>
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-              <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-            </svg>
-          </div>
-        </div>
+      
+
+       
       </div>
 
     </div>

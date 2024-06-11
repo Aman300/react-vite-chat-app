@@ -1,10 +1,10 @@
 const express = require("express");
 const auth = require("./auth/auth");
-const game = require("./game/game");
+const message = require("./message/message");
 const router = express.Router();
 
 router.use("/auth", auth);
-router.use("/game", game);
+router.use("/message", message);
 
 
 router.all("*", async (req, res) => {

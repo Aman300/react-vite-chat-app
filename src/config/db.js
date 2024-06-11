@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 // MongoDB connection URL
-const dbUrl = "mongodb+srv://thinkinternet2020:FlrUonevplMlfTXx@cluster0.bgydh5k.mongodb.net/ludobattle"
+const dbUrl = "mongodb+srv://thinkinternet2020:FlrUonevplMlfTXx@cluster0.bgydh5k.mongodb.net/OurChat"
 
 mongoose.set("strictQuery", true);
 

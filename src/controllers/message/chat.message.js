@@ -1,5 +1,5 @@
 const { errorResponse } = require("../../helper/error.response")
-const ludoGame = require("../../models/ludo.game")
+// const ludoGame = require("../../models/chat.message")
 
 
 exports.createGame =  async (req, res) =>{
@@ -21,7 +21,7 @@ exports.createGame =  async (req, res) =>{
                 status: "new"
             })
             if(!gameCreate){
-                return errorResponse(res, 400, false, "Some thing went wrong game not created")
+                return errorResponse(res, 400, false, "Some thing went wrong message not created")
             }else{
                 return errorResponse(res, 201, true, "Game create successfully", gameCreate)
             }
@@ -41,7 +41,7 @@ exports.gameOpen =  async (req, res) =>{
         }).populate(["user_id"])
 
         if(!isGame){
-            return errorResponse(res, 400, false, "Some thing went wrong game not fetch")
+            return errorResponse(res, 400, false, "Some thing went wrong message not fetch")
         }else{
             return errorResponse(res, 200, true, "Game fetch successfully", isGame)
         }
@@ -59,7 +59,7 @@ exports.gameDelete =  async (req, res) =>{
         })
 
         if(!isGame){
-            return errorResponse(res, 400, false, "Some thing went wrong game not fetch")
+            return errorResponse(res, 400, false, "Some thing went wrong message not fetch")
         }else{
             return errorResponse(res, 200, true, "Game delete successfully", isGame)
         }
