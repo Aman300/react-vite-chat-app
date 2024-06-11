@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { openGameRoute } from '../../utils/APIRoutes';
+import { openGameRoute, userDetailsRoute } from '../../utils/APIRoutes';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useFormik } from 'formik';
 import { createGameRoute, deleteGameRoute } from '../../utils/APIRoutes';
 import socket from "../../utils/Socket";
 import 'animate.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 
 var date = new Date();
@@ -34,9 +34,11 @@ function Chat() {
   const [showModal, setShowModal] = useState(false);
   const [data,setData] = useState([])
 
+  let param = useParams();
+
     async function fetchUserDetails(){
     try{
-        let response = await axios.get(openGameRoute)
+        let response = await axios.get(userDetailsRoute + `/${param.id}`)
         if(response.data.status){
         setData(response.data.data) 
         }
@@ -53,6 +55,7 @@ function Chat() {
 
 
         useEffect(() => {
+            fetchUserDetails();
         // Emit join-room event when the socket connection is established
         socket.emit("join-room", JSON.parse(localStorage.getItem("room")) || 1);
         socket.emit("send-message", {
@@ -155,10 +158,10 @@ function Chat() {
         <div className='flex justify-between items-center mb-4'>
         <div className='flex justify-center items-center gap-2'>
             <div>
-              <img className='size-12' src="https://avatar.iran.liara.run/username?username=Aman+Sharma" alt="" />
+              <img className='size-12' src={data && data.profile} alt="" />
             </div>
             <div>
-              <p className='text-black font-semibold'>Aman Sharma</p>
+              <p className='text-black font-semibold'>{data && data.name}</p>
               <p className='text-sm font-semibold text-green-500'>Online..</p>
             </div>
           </div>

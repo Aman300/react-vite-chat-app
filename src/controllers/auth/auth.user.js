@@ -52,6 +52,21 @@ exports.userList  =  async (req, res) =>{
     }
 
 }
+exports.userDetails  =  async (req, res) =>{
+
+    try{
+        let isUserExist = await chatUser.findOne({_id: req.params.id})
+        if (isUserExist) {        
+            return errorResponse(res, 200, true, "User details fetch successfully!", isUserExist);
+        }else{
+            return errorResponse(res, 400, false, "Something went wrong!!!")
+        }        
+
+    }catch(e){
+        return errorResponse(res, 500, false, e.message)
+    }
+
+}
 exports.clearDatabase  =  async (req, res) =>{
 
     try{
