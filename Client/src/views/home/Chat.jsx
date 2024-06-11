@@ -57,7 +57,7 @@ function Chat() {
         socket.emit("join-room", JSON.parse(localStorage.getItem("room")) || 1);
         socket.emit("send-message", {
             user: user.name,
-            picture: user.picture || "https://avatars.githubusercontent.com/u/120866771?v=4",
+            picture: user.picture || "https://avatar.iran.liara.run/username?username=Aman+Sharma",
             message: user.name + ` has joined the chat room ${JSON.parse(localStorage.getItem("room"))}`,
             time: current_time,
             room: JSON.parse(localStorage.getItem("room"))
@@ -71,7 +71,7 @@ function Chat() {
         socket.on("disconnect", () => {
             socket.emit("send-message", {
             user: user.name,
-            picture: user.picture || "https://avatars.githubusercontent.com/u/120866771?v=4",
+            picture: user.picture || "https://avatar.iran.liara.run/username?username=Aman+Sharma",
             message: user.name + " has left the chat",
             time: current_time,
             room: JSON.parse(localStorage.getItem("room"))
@@ -95,7 +95,7 @@ function Chat() {
         const sendMessage = () => {
         socket.emit("send-message", {
             user: user.name,
-            picture: user.picture || "https://avatars.githubusercontent.com/u/120866771?v=4",
+            picture: user.picture || "https://avatar.iran.liara.run/username?username=Aman+Sharma",
             message: message,
             time: current_time,
             room: JSON.parse(localStorage.getItem("room"))
@@ -155,7 +155,7 @@ function Chat() {
         <div className='flex justify-between items-center mb-4'>
         <div className='flex justify-center items-center gap-2'>
             <div>
-              <img className=' size-12' src="https://avatar.iran.liara.run/username?username=Aman+Sharma" alt="" />
+              <img className='size-12' src="https://avatar.iran.liara.run/username?username=Aman+Sharma" alt="" />
             </div>
             <div>
               <p className='text-black font-semibold'>Aman Sharma</p>
@@ -169,12 +169,12 @@ function Chat() {
 
       
         <div className="flex justify-center mt-5">
-          <div className="rounded-[18px] bg-green-100 p-6 w-full">
+          <div className="rounded-[18px] w-full">
             <div>
               <div
                 ref={chatContainerRef}
                 id="chat"
-                className="h-[350px] overflow-y-auto"
+                className="h-[430px] overflow-y-auto"
               >
                 {chatMessages.map((message, index) => (
                     <div
@@ -189,7 +189,7 @@ function Chat() {
                         <img
                           src={message.picture}
                           alt=""
-                          className="w-10 h-10 rounded-full"
+                          className="w-6 h-6 rounded-full"
                         />
                       )}
                       <div
@@ -197,16 +197,16 @@ function Chat() {
                           message.user === user.name
                             ? "bg-blue-100 text-right"
                             : "bg-gray-100 text-left"
-                        } p-3 rounded-lg`}
+                        } p-2 rounded-lg`}
                       >
-                        <p>{message.message} <span className="text-xs text-gray-500">{message.time}</span></p>
+                        <p className='text-[12px]'>{message.message} <span className="text-[10px] text-gray-500">{message.time}</span></p>
                          {/* Add time here */}
                       </div>
                       {message.user === user.name && (
                         <img
                           src={message.picture}
                           alt=""
-                          className="w-10 h-10 rounded-full"
+                          className="w-6 h-6 rounded-full"
                         />
                       )}
                     </div>

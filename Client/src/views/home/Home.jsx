@@ -117,32 +117,32 @@ async function fetchUserList(){
 
 
 
-  // useEffect(() => {
-  //   fetchUserList();
-  //   // Emit join-room event when the socket connection is established
-  //   socket.emit("join-room", 101);
-  //   socket.emit("send-message", 
-  //     fetchOpenGame()
-  //   );
+  useEffect(() => {
+    fetchUserList();
+    // Emit join-room event when the socket connection is established
+    socket.emit("join-room", 101);
+    socket.emit("send-message", 
+      fetchOpenGame()
+    );
 
-  //   socket.on("receive-message", (data) => {
-  //     console.log(data)
-  //     setData(data)
-  //     //setChatMessages((prevMessages) => [...prevMessages, data]);
-  //   });
+    socket.on("receive-message", (data) => {
+      console.log(data)
+      setData(data)
+      //setChatMessages((prevMessages) => [...prevMessages, data]);
+    });
 
-  //   socket.on("disconnect", () => {
-  //     socket.emit("send-message", 
-  //     fetchOpenGame()
-  //   );
-  //   });
+    socket.on("disconnect", () => {
+      socket.emit("send-message", 
+      fetchOpenGame()
+    );
+    });
 
-  //   return () => {
-  //     // Unsubscribe from socket events here if needed
-  //     // Note: It's generally not necessary to manually disconnect the socket here,
-  //     // as it will be disconnected automatically when the component unmounts.
-  //   };
-  // }, []);
+    return () => {
+      // Unsubscribe from socket events here if needed
+      // Note: It's generally not necessary to manually disconnect the socket here,
+      // as it will be disconnected automatically when the component unmounts.
+    };
+  }, []);
 
 
 
