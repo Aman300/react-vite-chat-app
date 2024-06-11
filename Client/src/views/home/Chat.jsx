@@ -57,13 +57,13 @@ function Chat() {
         useEffect(() => {
             fetchUserDetails();
         // Emit join-room event when the socket connection is established
-        socket.emit("join-room", JSON.parse(localStorage.getItem("room")) || 1);
+        socket.emit("join-room", (localStorage.getItem("room")) || 1);
         socket.emit("send-message", {
             user: user.name,
-            picture: user.picture || "https://avatar.iran.liara.run/username?username=Aman+Sharma",
-            message: user.name + ` has joined the chat room ${JSON.parse(localStorage.getItem("room"))}`,
+            picture: user.profile || "https://avatar.iran.liara.run/username?username=Aman+Sharma",
+            message: user.name + ` has joined the chat room ${(localStorage.getItem("room"))}`,
             time: current_time,
-            room: JSON.parse(localStorage.getItem("room"))
+            room: (localStorage.getItem("room"))
         });
 
         socket.on("receive-message", (data) => {
@@ -74,10 +74,10 @@ function Chat() {
         socket.on("disconnect", () => {
             socket.emit("send-message", {
             user: user.name,
-            picture: user.picture || "https://avatar.iran.liara.run/username?username=Aman+Sharma",
+            picture: user.profile || "https://avatar.iran.liara.run/username?username=Aman+Sharma",
             message: user.name + " has left the chat",
             time: current_time,
-            room: JSON.parse(localStorage.getItem("room"))
+            room: (localStorage.getItem("room"))
             });
         });
 
@@ -98,43 +98,13 @@ function Chat() {
         const sendMessage = () => {
         socket.emit("send-message", {
             user: user.name,
-            picture: user.picture || "https://avatar.iran.liara.run/username?username=Aman+Sharma",
+            picture: user.profile || "https://avatar.iran.liara.run/username?username=Aman+Sharma",
             message: message,
             time: current_time,
-            room: JSON.parse(localStorage.getItem("room"))
+            room: (localStorage.getItem("room"))
         });
         setMessage("");
         };
-
-
-
-//   useEffect(() => {
-//     // Emit join-room event when the socket connection is established
-//     socket.emit("join-room", 101);
-//     socket.emit("send-message", 
-//       fetchUserDetails()
-//     );
-
-//     socket.on("receive-message", (data) => {
-//       console.log(data)
-//       setData(data)
-//       //setChatMessages((prevMessages) => [...prevMessages, data]);
-//     });
-
-//     socket.on("disconnect", () => {
-//       socket.emit("send-message", 
-//       fetchUserDetails()
-//     );
-//     });
-
-//     return () => {
-//       // Unsubscribe from socket events here if needed
-//       // Note: It's generally not necessary to manually disconnect the socket here,
-//       // as it will be disconnected automatically when the component unmounts.
-//     };
-//   }, []);
-
-
 
 
   return (

@@ -11,7 +11,6 @@ exports.userLogin  =  async (req, res) =>{
         if(req.body){
             let isUserExist = await chatUser.findOne({
                 email: req.body.email,
-                password: req.body.password,
             })
             if (isUserExist) {        
                 return errorResponse(res, 200, true, "Login successfully!", isUserExist);

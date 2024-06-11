@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { openGameRoute, userListRoute } from '../../utils/APIRoutes';
+import { openGameRoute, sendMessageRoute, userListRoute } from '../../utils/APIRoutes';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { useFormik } from 'formik';
@@ -43,17 +43,6 @@ function Home() {
     }
   };
 
-
-async function fetchOpenGame(){
-  try{
-    let response = await axios.get(openGameRoute)
-    if(response.data.status){
-      setData(response.data.data) 
-    }
-  }catch(e){
-    console.log(e)
-  }
-}
 async function fetchUserList(){
   try{
     let response = await axios.get(userListRoute)
@@ -96,46 +85,25 @@ async function fetchUserList(){
   });
 
 
-
-  async function deleteGame(id){
-    try{
-      let response = await axios.delete(deleteGameRoute + `/${id}`,{
-      })
-
-      if(response.data.status){
-        toast.success(response.data.message);
-        socket.emit("send-message", {
-          room: 101
-        });
-      }
-
-    }catch(e){
-      console.log(e)
-      toast.success(e.response.data.message);
-    }
-  }
-
-
-
   useEffect(() => {
     fetchUserList();
     // Emit join-room event when the socket connection is established
-    socket.emit("join-room", 101);
-    socket.emit("send-message", 
-      fetchOpenGame()
-    );
+    // socket.emit("join-room", 101);
+    // socket.emit("send-message", 
+    //   fetchOpenGame()
+    // );
 
-    socket.on("receive-message", (data) => {
-      console.log(data)
-      setData(data)
-      //setChatMessages((prevMessages) => [...prevMessages, data]);
-    });
+    // socket.on("receive-message", (data) => {
+    //   console.log(data)
+    //   setData(data)
+    //   //setChatMessages((prevMessages) => [...prevMessages, data]);
+    // });
 
-    socket.on("disconnect", () => {
-      socket.emit("send-message", 
-      fetchOpenGame()
-    );
-    });
+    // socket.on("disconnect", () => {
+    //   socket.emit("send-message", 
+    //   fetchOpenGame()
+    // );
+    // });
 
     return () => {
       // Unsubscribe from socket events here if needed
@@ -144,7 +112,22 @@ async function fetchUserList(){
     };
   }, []);
 
-
+  function generateRoomCode(id) {
+    // Ensure userId is a string
+    const senderId = String(userId._id);
+    
+    // Ensure id is a string
+    const receiverId = String(id);
+  
+    // Combine senderId and receiverId
+    const roomCode = senderId < receiverId ? `${senderId}_${receiverId}` : `${receiverId}_${senderId}`;
+  
+    localStorage.setItem("room", roomCode);
+    
+    return roomCode;
+  }
+  
+  
 
 
 
@@ -154,33 +137,37 @@ async function fetchUserList(){
     <div className='h-screen p-5'>
       <div>
         <div className='flex justify-between items-center mb-4'>
-          <p className=' font-semibold'>User</p>
+          <p className=' font-semibold'>Chat User</p>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 cursor-pointer">
             <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
           </svg>
         </div>
 
 
-          {
-            userData && userData.map((item, index)=>(
-              <Link key={index} to={`/chat/${item._id}`} className='flex justify-between items-center bg-white w-full h-20 px-5 rounded-2xl mb-3'>
-              <div className='flex justify-center items-center gap-2'>
-                <div>
-                  <img className=' size-12' src={item.profile} alt="" />
+        {
+          userData &&
+          userData.map((item, index) =>
+            item._id !== userId._id ? (
+              <Link onClick={() => generateRoomCode(item._id)} key={index} to={`/chat/${item._id}`} className='flex justify-between items-center bg-white w-full h-20 px-5 rounded-2xl mb-3'>
+                <div className='flex justify-center items-center gap-2'>
+                  <div>
+                    <img className=' size-12' src={item.profile} alt="" />
+                  </div>
+                  <div>
+                    <p className='text-black font-semibold'>{item.name}</p>
+                    <p className='text-sm font-semibold text-gray-500'>I'll Call you later</p>
+                  </div>
                 </div>
                 <div>
-                  <p className='text-black font-semibold'>{item.name}</p>
-                  <p className='text-sm font-semibold text-gray-500'>I'll Call you later</p>
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+                  </svg>
                 </div>
-              </div>
-              <div>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
-                </svg>
-              </div>
-            </Link>
-            )) 
-          }
+              </Link>
+            ) : null
+          )
+        }
+
        
 
       
