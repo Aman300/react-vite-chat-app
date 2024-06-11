@@ -7,7 +7,7 @@ module.exports = function (server) {
   const io = socket(server, {
     cors: {
       // origin: "http://localhost:3001",
-      origin: "https://ourchat.onrender.com/",
+      origin: "https://ourchat-821q.onrender.com",
       credentials: true,
     },
   });

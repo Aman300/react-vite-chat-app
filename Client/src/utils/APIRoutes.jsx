@@ -1,5 +1,5 @@
 // export const host = "http://localhost:3000";
-export const host = "https://ourchat.onrender.com/";
+export const host = "https://ourchat-821q.onrender.com";
 export const loginRoute = `${host}/api/auth/login`;
 export const userListRoute = `${host}/api/auth/user-list`;
 export const userDetailsRoute = `${host}/api/auth/user-details`;
