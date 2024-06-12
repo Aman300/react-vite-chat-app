@@ -36,15 +36,15 @@ module.exports = function (server) {
     });
   
     socket.on("disconnect", () => {
-      socket.on("is-online",async (id) => {
-        try{
+      // socket.on("is-online",async (id) => {
+      //   try{
           
-          let isUserExist = await chatUser.findOneAndUpdate({_id: id}, {$set:{isOnline: false}}, {new: true})      
-          console.log(`User ${isUserExist.name} Update ${isUserExist.isOnline}`);
-        }catch(e){
-            return errorResponse(res, 500, false, e.message)
-        }      
-      });
+      //     let isUserExist = await chatUser.findOneAndUpdate({_id: id}, {$set:{isOnline: false}}, {new: true})      
+      //     console.log(`User ${isUserExist.name} Update ${isUserExist.isOnline}`);
+      //   }catch(e){
+      //       return errorResponse(res, 500, false, e.message)
+      //   }      
+      // });
       console.log("Disconnected from the server");
     });
   });
