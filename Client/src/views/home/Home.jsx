@@ -86,24 +86,26 @@ async function fetchUserList(){
 
 
   useEffect(() => {
+
+    socket.emit("is-online", 
+      userId._id
+    );
+
     fetchUserList();
     // Emit join-room event when the socket connection is established
     // socket.emit("join-room", 101);
-    // socket.emit("send-message", 
-    //   fetchOpenGame()
-    // );
-
+   
     // socket.on("receive-message", (data) => {
     //   console.log(data)
     //   setData(data)
     //   //setChatMessages((prevMessages) => [...prevMessages, data]);
     // });
 
-    // socket.on("disconnect", () => {
-    //   socket.emit("send-message", 
-    //   fetchOpenGame()
-    // );
-    // });
+    socket.on("disconnect", () => {
+      // When the socket disconnects, emit an "is-online" event to the server
+      socket.emit("is-online", userId._id);
+  });
+  
 
     return () => {
       // Unsubscribe from socket events here if needed
@@ -155,7 +157,7 @@ async function fetchUserList(){
                   </div>
                   <div>
                     <p className='text-black font-semibold'>{item.name}</p>
-                    <p className='text-sm font-semibold text-gray-500'>I'll Call you later</p>
+                    <p className={`text-sm font-semibold ${item.isOnline ? "text-green-500" : "text-gray-500"} `}>{item.isOnline ? "Online..." : item.lastSeen}</p>
                   </div>
                 </div>
                 <div>

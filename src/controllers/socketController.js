@@ -2,6 +2,7 @@
 
 const socket = require("socket.io");
 const ludoGame = require("../models/chat.message");
+const chatUser = require("../models/chat.user");
 
 module.exports = function (server) {
   const io = socket(server, {
@@ -15,6 +16,15 @@ module.exports = function (server) {
   io.on("connection", (socket) => {
     console.log("Connected to socket", socket.id);
   
+    socket.on("is-online",async (id) => {
+      try{
+        let isUserExist = await chatUser.findOneAndUpdate({_id: id}, {$set:{isOnline: true}}, {new: true})      
+        console.log(`User ${isUserExist.name} Update ${isUserExist.isOnline}`);
+      }catch(e){
+          return errorResponse(res, 500, false, e.message)
+      }      
+    });
+
     socket.on("join-room", (room) => {
       socket.join(room);
       console.log(`Socket ${socket.id} joined room ${room}`);
@@ -26,6 +36,15 @@ module.exports = function (server) {
     });
   
     socket.on("disconnect", () => {
+      socket.on("is-online",async (id) => {
+        try{
+          
+          let isUserExist = await chatUser.findOneAndUpdate({_id: id}, {$set:{isOnline: false}}, {new: true})      
+          console.log(`User ${isUserExist.name} Update ${isUserExist.isOnline}`);
+        }catch(e){
+            return errorResponse(res, 500, false, e.message)
+        }      
+      });
       console.log("Disconnected from the server");
     });
   });

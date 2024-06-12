@@ -9,7 +9,7 @@ const schema = new mongoose.Schema(
         trim: true
     },
     password:{
-        type: Number,
+        type: String,
         required: true,
         trim: true,
     },   
@@ -25,7 +25,15 @@ const schema = new mongoose.Schema(
     token: {
         type: String,
         default: ""
-    }
+    },
+    isOnline:{
+      type: Boolean,
+      default: false,
+    },
+    lastSeen:{
+      type: Date,
+      default: Date.now,
+    },
   },
   {
     timestamps: true,

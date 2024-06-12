@@ -58,13 +58,13 @@ function Chat() {
             fetchUserDetails();
         // Emit join-room event when the socket connection is established
         socket.emit("join-room", (localStorage.getItem("room")) || 1);
-        socket.emit("send-message", {
-            user: user.name,
-            picture: user.profile || "https://avatar.iran.liara.run/username?username=Aman+Sharma",
-            message: user.name + ` has joined the chat room ${(localStorage.getItem("room"))}`,
-            time: current_time,
-            room: (localStorage.getItem("room"))
-        });
+        // socket.emit("send-message", {
+        //     user: user.name,
+        //     picture: user.profile || "https://avatar.iran.liara.run/username?username=Aman+Sharma",
+        //     message: user.name + ` has joined the chat room ${(localStorage.getItem("room"))}`,
+        //     time: current_time,
+        //     room: (localStorage.getItem("room"))
+        // });
 
         socket.on("receive-message", (data) => {
 
@@ -96,14 +96,14 @@ function Chat() {
         }, [chatMessages]);
 
         const sendMessage = () => {
-        socket.emit("send-message", {
-            user: user.name,
-            picture: user.profile || "https://avatar.iran.liara.run/username?username=Aman+Sharma",
-            message: message,
-            time: current_time,
-            room: (localStorage.getItem("room"))
-        });
-        setMessage("");
+          socket.emit("send-message", {
+              user: user.name,
+              picture: user.profile || "https://avatar.iran.liara.run/username?username=Aman+Sharma",
+              message: message,
+              time: current_time,
+              room: (localStorage.getItem("room"))
+          });
+          setMessage("");
         };
 
 
@@ -132,7 +132,7 @@ function Chat() {
             </div>
             <div>
               <p className='text-black font-semibold'>{data && data.name}</p>
-              <p className='text-sm font-semibold text-green-500'>Online..</p>
+              <p className={`text-sm font-semibold ${data && data.isOnline ? "text-green-500" : "text-gray-500"} `}>{data && data.isOnline ? "Online..." : data.lastSeen}</p>
             </div>
           </div>
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 cursor-pointer">
@@ -147,7 +147,7 @@ function Chat() {
               <div
                 ref={chatContainerRef}
                 id="chat"
-                className="h-[430px] overflow-y-auto"
+                className="xl:h-[430px] h-[540px] overflow-y-auto"
               >
                 {chatMessages.map((message, index) => (
                     <div
@@ -158,30 +158,43 @@ function Chat() {
                           : "justify-start"
                       }`}
                     >
-                      {message.user !== user.name && (
+                      {/* {message.user !== user.name && (
                         <img
                           src={message.picture}
                           alt=""
                           className="w-6 h-6 rounded-full"
                         />
-                      )}
+                      )} */}
                       <div
                         className={`${
                           message.user === user.name
-                            ? "bg-blue-100 text-right"
+                            ? "bg-green-100 text-right"
                             : "bg-gray-100 text-left"
                         } p-2 rounded-lg`}
                       >
-                        <p className='text-[12px]'>{message.message} <span className="text-[10px] text-gray-500">{message.time}</span></p>
+                        <div>
+                            {message.message.length > 20 ? (
+                              <>
+                                <p className='text-[12px]'>{message.message}</p>
+                                <p className="text-[10px] text-gray-500">{message.time}</p>
+                              </>
+                            ) : (
+                              <p className='text-[12px]'>
+                                {message.message}{" "}
+                                <span className="text-[10px] text-gray-500">{message.time}</span>
+                              </p>
+                            )}
+                          </div>
+
                          {/* Add time here */}
                       </div>
-                      {message.user === user.name && (
+                      {/* {message.user === user.name && (
                         <img
                           src={message.picture}
                           alt=""
                           className="w-6 h-6 rounded-full"
                         />
-                      )}
+                      )} */}
                     </div>
                   ))}
 
@@ -216,7 +229,7 @@ function Chat() {
                       d="M6 12 3.269 3.125A59.769 59.769 0 0 1 21.485 12 59.768 59.768 0 0 1 3.27 20.875L5.999 12Zm0 0h7.5"
                     />
                   </svg>
-                  Send
+                  
                 </button>
               </div>
             </div>
